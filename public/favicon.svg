@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The logo face from the top bar: a lopsided mauve creature with two dot eyes. -->
+  <path d="M29 8C48 5 62 15 61 31 60 47 49 57 32 57 14 57 3 47 4 31 5 17 15 10 29 8Z" fill="#cbb3c5" stroke="#49413e" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="23" cy="33" r="3.4" fill="#49413e"/>
+  <circle cx="41" cy="33" r="3.4" fill="#49413e"/>
+</svg>
