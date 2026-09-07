@@ -1,0 +1,22 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+
+# Editor and agent scratch
+.agents/
+.codex/
+.claude/
+.idea
+.vscode
+
+# Empty placeholder files left in the project root by a sandbox
+.bash_profile
+.bashrc
+.gitconfig
+.gitmodules
+.mcp.json
+.profile
+.ripgreprc
+.zprofile
+.zshrc

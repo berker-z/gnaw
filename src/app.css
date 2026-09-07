@@ -1,0 +1,492 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;1,400&display=swap");
+:root {
+  font-family: "DM Sans", sans-serif;
+  background: #f7f3ec;
+  color: #49413e;
+  font-synthesis: none;
+  --paper: #fbf8f2;
+  --paper-2: #f2ede7;
+  --line: #ded6cf;
+  --ink: #49413e;
+  --muted: #9a8b84;
+  --mauve: #e9dfe6;
+  --mauve-ink: #705d6b;
+  --sage: #535c49;
+  --cream: #fffaf0;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  overflow: hidden;
+}
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #a18aa7;
+  outline-offset: 3px;
+}
+h2 {
+  font:
+    400 26px "Fraunces",
+    Georgia,
+    serif;
+  margin: 8px 0 8px;
+  letter-spacing: -0.4px;
+  overflow-wrap: anywhere;
+}
+.eyebrow {
+  font-size: 9px;
+  letter-spacing: 1.7px;
+  font-weight: 500;
+  color: #99877f;
+}
+
+/* The phone. On a handset it is the viewport; on a desk it is a frame. */
+.phone {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23766a60' opacity='.035' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+  position: relative;
+}
+@media (min-width: 720px) and (min-height: 640px) {
+  .phone {
+    width: 430px;
+    height: min(100dvh - 48px, 900px);
+    margin: auto;
+    border: 1px solid var(--line);
+    border-radius: 40px;
+    box-shadow: 0 18px 60px #73605114;
+    overflow: hidden;
+  }
+}
+.jar-screen {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 18px;
+}
+.bar.top {
+  border-bottom: 1px solid var(--line);
+  padding-top: max(12px, env(safe-area-inset-top));
+}
+.bar.bottom {
+  border-top: 1px solid var(--line);
+  background: var(--paper-2);
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.logo-face {
+  background: #cbb3c5;
+  border: 1.5px solid var(--ink);
+  border-radius: 47% 53% 41% 39%;
+  width: 28px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding-bottom: 2px;
+}
+.tabs,
+.presets {
+  display: flex;
+  gap: 4px;
+}
+.tabs button,
+.presets button {
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 20px;
+  font-size: 11px;
+  padding: 7px 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.presets button {
+  font-size: 10px;
+  padding: 6px 9px;
+}
+.tabs button.chosen,
+.presets button.chosen {
+  border-color: #dacbd7;
+  background: #f0e7ed;
+  color: #715d71;
+}
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0;
+}
+.canvas-host {
+  position: relative;
+}
+.canvas-host canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+  cursor: pointer;
+}
+.playground .canvas-host canvas {
+  cursor: grab;
+}
+.playground .canvas-host canvas:active {
+  cursor: grabbing;
+}
+.canvas-host > p {
+  position: absolute;
+  inset: 40% 10%;
+  font-size: 13px;
+  text-align: center;
+}
+.bar-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid #d9ced6;
+  background: var(--mauve);
+  color: var(--mauve-ink);
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.bar-button span {
+  font-size: 11px;
+  font-weight: 600;
+}
+.bar-button.add {
+  width: 50px;
+  height: 50px;
+  background: var(--sage);
+  border-color: var(--sage);
+  color: var(--cream);
+  font-size: 28px;
+  padding-bottom: 3px;
+}
+.bar-button.small {
+  width: auto;
+  height: 30px;
+  border-radius: 15px;
+  padding: 0 10px;
+  font-size: 10px;
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+}
+.bar-caption {
+  flex: 1;
+  text-align: center;
+  font:
+    italic 14px "Fraunces",
+    Georgia,
+    serif;
+  color: #8d7e78;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.bar-caption.left {
+  text-align: left;
+  font-style: normal;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.undo {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-style: normal;
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mauve-ink);
+  text-decoration: underline;
+  margin-left: 8px;
+}
+.caption {
+  font:
+    italic 15px "Fraunces",
+    Georgia,
+    serif;
+  text-align: center;
+  color: #8d7e78;
+  margin: 0 0 8px;
+  min-height: 18px;
+}
+.actions {
+  display: flex;
+  gap: 6px;
+}
+.actions button {
+  padding: 9px 10px;
+  border-radius: 7px;
+  border: 1px solid #d9ced6;
+  background: var(--mauve);
+  font-size: 11px;
+  color: var(--mauve-ink);
+  white-space: nowrap;
+}
+.actions button.done {
+  background: var(--sage);
+  color: var(--cream);
+  border-color: var(--sage);
+}
+
+/* Sheets */
+.sheet {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0;
+  width: 100%;
+  max-width: 430px;
+  margin: auto auto 0;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -10px 40px #73605120;
+}
+.sheet[open] {
+  animation: rise 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+@keyframes rise {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+.sheet::backdrop {
+  background: #49413e4d;
+}
+@media (min-width: 720px) and (min-height: 640px) {
+  .sheet {
+    margin: auto;
+    max-width: 380px;
+    border-radius: 22px;
+    box-shadow: 0 18px 60px #73605130;
+  }
+}
+.sheet-body {
+  padding: 22px 22px 26px;
+  position: relative;
+  max-height: 80dvh;
+  overflow: auto;
+}
+.sheet.tall .sheet-body {
+  min-height: 50dvh;
+}
+.sheet-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--paper-2);
+  font-size: 18px;
+  color: var(--muted);
+}
+.meta {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 6px;
+}
+.meta.faint {
+  color: var(--muted);
+  font-size: 11px;
+}
+.sheet-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+.sheet-actions button {
+  flex: 1;
+  padding: 12px 6px;
+  border-radius: 9px;
+  border: 1px solid #d9ced6;
+  background: var(--mauve);
+  font-size: 12px;
+  color: var(--mauve-ink);
+}
+.sheet-actions button.primary {
+  background: var(--sage);
+  color: var(--cream);
+  border-color: var(--sage);
+  flex: 1.4;
+}
+.task-form label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #9d8e85;
+  margin-top: 14px;
+}
+.task-form label small {
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 4px;
+  opacity: 0.8;
+}
+.task-form input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 11px 12px;
+  border: 1px solid #ded5cd;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+}
+.task-form input::placeholder {
+  color: #ada096;
+}
+.deadline-fields {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 10px;
+}
+.task-form .meta {
+  margin-top: 12px;
+}
+.link {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 11px;
+  color: var(--mauve-ink);
+  text-decoration: underline;
+}
+.part {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: none !important;
+}
+.part > span {
+  width: 20px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+}
+.part input {
+  margin-top: 0 !important;
+  flex: 1;
+}
+.part .link {
+  font-size: 18px;
+  text-decoration: none;
+  padding: 0 4px;
+}
+.add-part {
+  display: block;
+  margin: 14px 0 0 28px;
+}
+.split-confirm ol {
+  margin: 10px 0;
+  padding-left: 22px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+}
+.task {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  gap: 11px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 9px;
+  margin-left: -3px;
+}
+.task:hover {
+  background: var(--paper-2);
+}
+.mini-blob {
+  flex-shrink: 0;
+  width: 30px;
+  height: 27px;
+  border: 1px solid #6d6260;
+  border-radius: 49% 48% 39% 42%;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding-bottom: 1px;
+}
+.task > span:nth-child(2) {
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.task small {
+  display: block;
+  font-size: 10px;
+  color: #a0928a;
+  margin-top: 3px;
+}
+.task-arrow {
+  margin-left: auto;
+  font-size: 11px;
+  color: #b1a39b;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet[open] {
+    animation: none;
+  }
+}
