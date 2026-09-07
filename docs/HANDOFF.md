@@ -1,10 +1,12 @@
 # gnaw — handoff
 
-Updated September 7, 2026, late evening, after the accounts-and-sync session. Read this first in the next session; `AGENTS.md` has the rules and the immediate next steps.
+Updated September 7, 2026, after verifying the accounts and favicon commits. Read this first in the next session; `AGENTS.md` has the rules and the immediate next steps.
 
-September 7 Google follow-up: the user filled in the Google Web client credentials in `.dev.vars`. Uploaded only `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` to the live `gnaw` Worker with `wrangler secret bulk`; both succeeded. Production and a fresh local dev server return Google authorization URLs with the matching client ID, expected callback, OAuth state and PKCE challenge. This checks initiation only; the user still needs to finish Google sign-in in their browser to verify consent, code exchange and session creation. The existing user server on port 5173 returned 404 for the social sign-in endpoint; restart `npm run dev`. The temporary server on port 5174 was stopped after checking with request host localhost:5173. No app code deployment or commit was made. The public contact email is still needed. `.dev.vars` and environment variants are ignored, as are `.env` files; example files remain trackable.
+September 7 Google follow-up: the user filled in the Google Web client credentials in `.dev.vars`. Uploaded only `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` to the live `gnaw` Worker with `wrangler secret bulk`; both succeeded. Production and a fresh local dev server return Google authorization URLs with the matching client ID, expected callback, OAuth state and PKCE challenge. This checks initiation only; the user still needs to finish Google sign-in in their browser to verify consent, code exchange and session creation. The existing user server on port 5173 returned 404 for the social sign-in endpoint; restart `npm run dev`. The temporary server on port 5174 was stopped after checking with request host localhost:5173. No app code deployment or commit was made. The legal pages now use the public contact address chosen by the user. `.dev.vars` and environment variants are ignored, as are `.env` files; example files remain trackable.
 
 Google client ID correction: the first browser attempt failed with 401 invalid_client. The saved ID had an `http://` prefix and trailing slash. Removed the URL wrapper in `.dev.vars` and uploaded the corrected `GOOGLE_CLIENT_ID` to Cloudflare. Verified the live authorization request uses the corrected ID. Full browser sign-in still needs user confirmation. Restart the local dev server before retrying locally.
+
+Latest verification: all 33 tests and `npm run build` pass. The favicon links and assets are tracked. Browser tests were not rerun in this documentation follow-up. Local secrets remain ignored.
 
 ## Where things stand
 
@@ -14,7 +16,7 @@ Google client ID correction: the first browser attempt failed with 401 invalid_c
 
 Debug buttons in the Jar's bottom bar: `+?` adds a random creature of any mood, `↗?` ages a random handful by a few sizes (shifts `createdAt`), `✕?` clears the jar.
 
-**Accounts and sync landed on the evening of the 7th** (see the section below) and are deployed at https://gnaw.gnaw.workers.dev. Everything from that session is still uncommitted in the working tree. The user has not reviewed the sign-in sheet yet. Google credentials are deployed, with browser sign-in confirmation pending; Apple is parked (no paid developer account). The legal pages carry berker.zor@gmail.com as the contact address and are deployed with it.
+**Accounts and sync landed on the evening of the 7th** (see the section below) and are deployed at https://gnaw.gnaw.workers.dev. Accounts and sync are committed as `44766b2`; legal pages, favicon and touch icon are committed as `b615135`. Both commits are on `origin/main`, authored by berker-z. The user has not reviewed the sign-in sheet yet. Google credentials are deployed, with browser sign-in confirmation pending; Apple is parked (no paid developer account). The legal pages carry berker.zor@gmail.com as the contact address and are deployed with it.
 
 ## Accounts and sync
 
