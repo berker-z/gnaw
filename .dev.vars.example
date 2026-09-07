@@ -1,0 +1,25 @@
+# Copy to .dev.vars (gitignored) for `npm run dev`. In production these are
+# Worker secrets: `wrangler secret put NAME`.
+
+# Any long random string. `openssl rand -base64 32` will do.
+BETTER_AUTH_SECRET=
+# Leave empty in dev: the Worker then uses whatever origin the request came
+# in on, so any port works. Set it only when testing OAuth callbacks, which
+# must match what Google and Apple were told (http://localhost:5173).
+BETTER_AUTH_URL=
+
+# Google Cloud console > APIs & Services > Credentials > OAuth client (Web).
+# Authorised redirect URI: <BETTER_AUTH_URL>/api/auth/callback/google
+# Register both callbacks on the same Web client:
+# http://localhost:5173/api/auth/callback/google
+# https://gnaw.gnaw.workers.dev/api/auth/callback/google
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# Apple developer account > Identifiers > Services ID (this is the client id).
+# Return URL: <BETTER_AUTH_URL>/api/auth/callback/apple
+# The secret is a short-lived JWT: `node scripts/apple-secret.mjs` builds it.
+APPLE_CLIENT_ID=
+APPLE_CLIENT_SECRET=
+# The iOS app's bundle id, for native sign-in later.
+APPLE_APP_BUNDLE_IDENTIFIER=

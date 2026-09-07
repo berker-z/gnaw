@@ -9,6 +9,8 @@ npm install
 npm run dev
 ```
 
-Tap a creature to edit it, split it, or set it free. Add one with the + button, with or without a deadline. Tasks are saved in the browser. The Playground tab is the bare physics with dragging.
+Tap a creature to edit it, split it, or set it free. Add one with the + button, with or without a deadline. The Playground tab is the bare physics with dragging.
 
-`npm test` runs the physics and task-domain checks; `npm run test:browser` runs Playwright. See [HANDOFF.md](HANDOFF.md) for the design rules and [ROADMAP.md](ROADMAP.md) for where this is going.
+Tasks live in the browser until you sign in (Google, Apple, or an email and password). Signed in, the jar is kept in a Cloudflare D1 database and every device you sign in on sees the same creatures. The browser copy stays as a cache, so the jar opens instantly and works offline; changes are pushed when there is a connection.
+
+`npm run dev` runs the app and the Worker together, with a local D1 under `.wrangler/state`. Copy `.dev.vars.example` to `.dev.vars` first and run `npm run db:migrate` once. `npm test` runs the physics, task-domain and sync checks; `npm run test:browser` runs Playwright; `npm run deploy` builds and ships to Cloudflare. See [docs/HANDOFF.md](docs/HANDOFF.md) for the design rules and the account setup, and [docs/ROADMAP.md](docs/ROADMAP.md) for where this is going.

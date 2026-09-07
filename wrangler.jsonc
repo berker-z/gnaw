@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gnaw",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-07",
+  // better-auth hashes passwords with node:crypto's scrypt.
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    // The app is a single page; anything that is not a file is the app.
+    "not_found_handling": "single-page-application",
+    // Only the API goes through the Worker; everything else is served as a
+    // static asset without invoking it.
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "gnaw",
+      "database_id": "190706ff-7106-48b9-b29a-9a36bf531c0a",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    // Public origin of the deployed app. Overridden by .dev.vars in dev.
+    "BETTER_AUTH_URL": "https://gnaw.gnaw.workers.dev"
+  },
+  "observability": { "enabled": true }
+}

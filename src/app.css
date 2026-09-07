@@ -490,3 +490,78 @@ h2 {
     animation: none;
   }
 }
+
+/* Account */
+.account-button {
+  border: 1px solid #d9ced6;
+  background: var(--mauve);
+  color: var(--mauve-ink);
+  border-radius: 20px;
+  font-size: 11px;
+  padding: 7px 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.account-button.in {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 13px;
+}
+.account-button.attention {
+  box-shadow: 0 0 0 2px #e8c9a0;
+}
+.providers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+.provider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+}
+.provider-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--paper-2);
+  font-weight: 700;
+  font-size: 13px;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--line);
+}
+.meta.error {
+  color: #a0533f;
+  margin-top: 10px;
+}
+.sheet-actions button.danger {
+  background: #f1d9d2;
+  border-color: #e3c0b6;
+  color: #8a3f2c;
+}
+a.link {
+  font-size: inherit;
+}

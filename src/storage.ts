@@ -1,24 +1,24 @@
-/** Persistence behind a small interface, so the native wrapper can swap in
- * something sturdier later without touching the app. Versioned, validated on
- * the way in, and never trusted blindly. */
+/** Persistence behind a small interface. The jar only ever loads a list and
+ * saves a list; where it goes (localStorage, an account in the cloud, memory
+ * in tests) is the store's business. A store that can learn about changes
+ * from elsewhere offers `subscribe`. */
 import type { Task } from "./tasks";
+import { isTask } from "./sync";
 
 export interface TaskStore {
+  /** The cached list, or null when there has never been one (seed time). */
   load(): Task[] | null;
   save(tasks: Task[]): boolean;
+  /** Changes that arrived from another device. The listener gets the whole
+   * list. */
+  subscribe?(listener: (tasks: Task[]) => void): () => void;
 }
 
 const KEY = "gnaw.tasks.v1";
 
-const isTask = (t: unknown): t is Task =>
-  typeof t === "object" &&
-  t !== null &&
-  typeof (t as Task).id === "string" &&
-  typeof (t as Task).title === "string" &&
-  typeof (t as Task).color === "string" &&
-  Number.isFinite((t as Task).createdAt) &&
-  ((t as Task).deadline === null || Number.isFinite((t as Task).deadline));
-
+/** The original, cache-only store. The app now uses `createSyncStore` from
+ * ./sync, which reads this format on first run; this stays for tests and as
+ * the simplest possible implementation of the interface. */
 export const localStore: TaskStore = {
   load() {
     try {

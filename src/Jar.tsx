@@ -78,6 +78,61 @@ export function Jar({ store = localStore }: { store?: TaskStore }) {
     }
   };
 
+  /** Build the pile the way the playground presets do: one creature at a
+   * time, at its full size, each settling before the next drops. Dropping
+   * everyone at once, small, and inflating them in a heap left the memory
+   * foam remembering the heap: slabs, lobes, and a pile that oozed for
+   * minutes. The order is a shuffle keyed on task ids, so big and small
+   * mingle and the pile looks the same on every load. */
+  const buildPile = (list: Task[], radii: Map<string, number>) => {
+    const key = (id: string) =>
+      [...id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
+    [...list]
+      .sort((a, b) => key(a.id) - key(b.id))
+      .forEach((task, i) => {
+        const r = radii.get(task.id)!;
+        const x =
+          LEFT + r + 8 + ((i * 0.618) % 1) * (RIGHT - LEFT - 2 * r - 16);
+        const b = world.add(task.title, x, TOP + r + 4, r, task.color);
+        if (!b) return;
+        blobOf.current.set(task.id, b.id);
+        for (let k = 0; k < 40; k++) world.step(1 / 60);
+      });
+    for (let k = 0; k < 120; k++) world.step(1 / 60);
+  };
+
+  /** The list as another device left it. Creatures are a view of tasks, so
+   * the view catches up: gone ones leave at once, new ones drop in (or form
+   * a pile, if the jar was empty), renamed ones change their label. */
+  const applyRemote = (next: Task[]) => {
+    const t = Date.now();
+    const prev = tasksRef.current;
+    const nextIds = new Set(next.map((x) => x.id));
+    for (const task of prev) {
+      if (nextIds.has(task.id)) continue;
+      const b = blobOf.current.get(task.id);
+      if (b !== undefined) world.remove(b);
+      blobOf.current.delete(task.id);
+    }
+    tasksRef.current = next;
+    setTasksState(next);
+    const radii = fitRadii(next, t);
+    const fresh = next.filter((x) => !blobOf.current.has(x.id));
+    if (world.blobs.length === 0) buildPile(fresh, radii);
+    else
+      for (const task of fresh) {
+        const r = radii.get(task.id)!;
+        const id = scene.current?.dropIn(task.title, task.color, r);
+        if (id !== undefined && id !== null) blobOf.current.set(task.id, id);
+      }
+    for (const task of next) {
+      const blob = world.blobs.find((b) => b.id === blobOf.current.get(task.id));
+      if (blob && blob.title !== task.title) blob.title = task.title;
+    }
+    resize();
+    setModal((m) => (m && "id" in m && !nextIds.has(m.id) ? null : m));
+  };
+
   useEffect(() => {
     let disposed = false;
     const t = Date.now();
@@ -85,28 +140,8 @@ export function Jar({ store = localStore }: { store?: TaskStore }) {
     tasksRef.current = loaded;
     setTasksState(loaded);
     if (!store.load()) store.save(loaded);
-    const radii = fitRadii(loaded, t);
-    // Build the pile before the first frame, the way the playground presets
-    // do: one creature at a time, at its full size, each settling before the
-    // next drops. Dropping everyone at once, small, and inflating them in a
-    // heap left the memory foam remembering the heap: slabs, lobes, and a
-    // pile that oozed for minutes. The order is a shuffle keyed on task ids,
-    // so big and small mingle and the pile looks the same on every load.
-    const key = (id: string) =>
-      [...id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
-    if (world.blobs.length === 0)
-      [...loaded]
-        .sort((a, b) => key(a.id) - key(b.id))
-        .forEach((task, i) => {
-          const r = radii.get(task.id)!;
-          const x =
-            LEFT + r + 8 + ((i * 0.618) % 1) * (RIGHT - LEFT - 2 * r - 16);
-          const b = world.add(task.title, x, TOP + r + 4, r, task.color);
-          if (!b) return;
-          blobOf.current.set(task.id, b.id);
-          for (let k = 0; k < 40; k++) world.step(1 / 60);
-        });
-    for (let k = 0; k < 120; k++) world.step(1 / 60);
+    if (world.blobs.length === 0) buildPile(loaded, fitRadii(loaded, t));
+    const unsubscribe = store.subscribe?.(applyRemote);
     const moodOf = (b: Blob): FaceMood => {
       const entry = [...blobOf.current].find(([, id]) => id === b.id);
       const task = entry && tasksRef.current.find((x) => x.id === entry[0]);
@@ -134,6 +169,7 @@ export function Jar({ store = localStore }: { store?: TaskStore }) {
     document.addEventListener("visibilitychange", wake);
     return () => {
       disposed = true;
+      unsubscribe?.();
       scene.current?.destroy();
       clearInterval(timer);
       document.removeEventListener("visibilitychange", wake);
